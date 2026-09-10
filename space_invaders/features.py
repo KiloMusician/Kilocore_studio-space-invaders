@@ -21,9 +21,11 @@ def vectorize_observation(
 ) -> list[float]:
     """Compile a structured observation into the stable v1 ML feature vector.
 
-    This function is the single owner of the vector projection. The game engine,
-    learned-policy loader, recorders, and external trainers can therefore agree
-    on one representation without importing one another.
+    The deterministic engine introduced the original v1 projection. This pure
+    helper makes that representation available to checkpoint inference without
+    requiring an engine object. Contract tests pin parity with
+    ``ShmupEngine.vector_observation`` so the compatibility seam cannot drift
+    silently while ownership is consolidated in a later refactor.
     """
 
     if observation.get("schema") != STRUCTURED_OBSERVATION_SCHEMA:
