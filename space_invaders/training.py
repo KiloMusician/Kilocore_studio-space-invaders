@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .ai import Policy
 from .core import Action, GameConfig, ShmupEngine
+from .features import ACTION_SCHEMA, VECTOR_FEATURE_COUNT, VECTOR_OBSERVATION_SCHEMA
 
 
 @dataclass(frozen=True)
@@ -131,6 +132,9 @@ def run_episode(
 
     return {
         "schema": "kilocore.shmup-episode.v1",
+        "observation_schema": VECTOR_OBSERVATION_SCHEMA,
+        "action_schema": ACTION_SCHEMA,
+        "feature_count": VECTOR_FEATURE_COUNT,
         "seed": seed,
         "ticks": env.engine.state.tick,
         "wave": env.engine.state.wave,
@@ -157,6 +161,9 @@ class TransitionRecorder:
     def write(self, transition: Transition) -> None:
         payload = {
             "schema": "kilocore.shmup-transition.v1",
+            "observation_schema": VECTOR_OBSERVATION_SCHEMA,
+            "action_schema": ACTION_SCHEMA,
+            "feature_count": VECTOR_FEATURE_COUNT,
             "observation": transition.observation,
             "action": transition.action,
             "reward": transition.reward,
